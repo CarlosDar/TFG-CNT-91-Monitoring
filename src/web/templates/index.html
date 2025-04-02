@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNT-91 Control Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <i class="fas fa-microchip"></i>
+            <span>CNT-91</span>
+        </div>
+        <nav>
+            <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="#"><i class="fas fa-chart-line"></i> Mediciones</a>
+            <a href="#"><i class="fas fa-sliders-h"></i> Configuración</a>
+            <a href="#"><i class="fas fa-history"></i> Historial</a>
+        </nav>
+    </div>
+
+    <main class="main-content">
+        <header>
+            <div class="device-status">
+                <span class="status-indicator offline"></span>
+                Estado: <span id="estado-dispositivo">Desconectado</span>
+            </div>
+            <div class="header-controls">
+                <button class="btn-primary" id="btn-conectar">
+                    <i class="fas fa-plug"></i> Conectar
+                </button>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-thermometer-half"></i>
+                    Temperatura
+                </div>
+                <div class="card-content">
+                    <div class="metric">
+                        <span class="value">--</span>
+                        <span class="unit">°C</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-wave-square"></i>
+                    Frecuencia Canal 1
+                </div>
+                <div class="card-content">
+                    <div class="metric">
+                        <span class="value">--</span>
+                        <span class="unit">Hz</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-wave-square"></i>
+                    Frecuencia Canal 2
+                </div>
+                <div class="card-content">
+                    <div class="metric">
+                        <span class="value">--</span>
+                        <span class="unit">Hz</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-wave-square"></i>
+                    Frecuencia Canal 3
+                </div>
+                <div class="card-content">
+                    <div class="metric">
+                        <span class="value">--</span>
+                        <span class="unit">Hz</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-section">
+            <h2>Control de Canales</h2>
+            <div class="channel-controls">
+                <div class="channel-group">
+                    <label>Canal 1</label>
+                    <div class="channel-buttons">
+                        <button class="btn-secondary"><i class="fas fa-play"></i></button>
+                        <button class="btn-secondary"><i class="fas fa-cog"></i></button>
+                    </div>
+                </div>
+                <div class="channel-group">
+                    <label>Canal 2</label>
+                    <div class="channel-buttons">
+                        <button class="btn-secondary"><i class="fas fa-play"></i></button>
+                        <button class="btn-secondary"><i class="fas fa-cog"></i></button>
+                    </div>
+                </div>
+                <div class="channel-group">
+                    <label>Canal 3</label>
+                    <div class="channel-buttons">
+                        <button class="btn-secondary"><i class="fas fa-play"></i></button>
+                        <button class="btn-secondary"><i class="fas fa-cog"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html> 
