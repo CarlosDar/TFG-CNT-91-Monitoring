@@ -14,10 +14,11 @@
             <span>CNT-91</span>
         </div>
         <nav>
-            <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
-            <a href="#"><i class="fas fa-chart-line"></i> Mediciones</a>
-            <a href="#"><i class="fas fa-sliders-h"></i> Configuración</a>
-            <a href="#"><i class="fas fa-history"></i> Historial</a>
+            <a href="#" class="active" data-section="dashboard"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="#" data-section="mediciones"><i class="fas fa-chart-line"></i> Mediciones</a>
+            <a href="#" data-section="configuracion"><i class="fas fa-sliders-h"></i> Configuración</a>
+            <a href="#" data-section="historial"><i class="fas fa-history"></i> Historial</a>
+            <a href="#" data-section="info-cnt91"><i class="fas fa-info-circle"></i> Información CNT-91</a>
         </nav>
     </div>
 
@@ -34,82 +35,127 @@
             </div>
         </header>
 
-        <div class="dashboard-grid">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-thermometer-half"></i>
-                    Temperatura
+        <div id="dashboard-section" class="content-section active">
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-thermometer-half"></i>
+                        Temperatura
+                    </div>
+                    <div class="card-content">
+                        <div class="metric">
+                            <span class="value">--</span>
+                            <span class="unit">°C</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <div class="metric">
-                        <span class="value">--</span>
-                        <span class="unit">°C</span>
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-wave-square"></i>
+                        Frecuencia Canal 1
+                    </div>
+                    <div class="card-content">
+                        <div class="metric">
+                            <span class="value">--</span>
+                            <span class="unit">Hz</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-wave-square"></i>
+                        Frecuencia Canal 2
+                    </div>
+                    <div class="card-content">
+                        <div class="metric">
+                            <span class="value">--</span>
+                            <span class="unit">Hz</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-wave-square"></i>
+                        Frecuencia Canal 3
+                    </div>
+                    <div class="card-content">
+                        <div class="metric">
+                            <span class="value">--</span>
+                            <span class="unit">Hz</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-wave-square"></i>
-                    Frecuencia Canal 1
-                </div>
-                <div class="card-content">
-                    <div class="metric">
-                        <span class="value">--</span>
-                        <span class="unit">Hz</span>
+            <div class="controls-section">
+                <h2>Control de Canales</h2>
+                <div class="channel-controls">
+                    <div class="channel-group">
+                        <label>Canal 1</label>
+                        <div class="channel-buttons">
+                            <button class="btn-secondary"><i class="fas fa-play"></i></button>
+                            <button class="btn-secondary"><i class="fas fa-cog"></i></button>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-wave-square"></i>
-                    Frecuencia Canal 2
-                </div>
-                <div class="card-content">
-                    <div class="metric">
-                        <span class="value">--</span>
-                        <span class="unit">Hz</span>
+                    <div class="channel-group">
+                        <label>Canal 2</label>
+                        <div class="channel-buttons">
+                            <button class="btn-secondary"><i class="fas fa-play"></i></button>
+                            <button class="btn-secondary"><i class="fas fa-cog"></i></button>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-wave-square"></i>
-                    Frecuencia Canal 3
-                </div>
-                <div class="card-content">
-                    <div class="metric">
-                        <span class="value">--</span>
-                        <span class="unit">Hz</span>
+                    <div class="channel-group">
+                        <label>Canal 3</label>
+                        <div class="channel-buttons">
+                            <button class="btn-secondary"><i class="fas fa-play"></i></button>
+                            <button class="btn-secondary"><i class="fas fa-cog"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="controls-section">
-            <h2>Control de Canales</h2>
-            <div class="channel-controls">
-                <div class="channel-group">
-                    <label>Canal 1</label>
-                    <div class="channel-buttons">
-                        <button class="btn-secondary"><i class="fas fa-play"></i></button>
-                        <button class="btn-secondary"><i class="fas fa-cog"></i></button>
-                    </div>
-                </div>
-                <div class="channel-group">
-                    <label>Canal 2</label>
-                    <div class="channel-buttons">
-                        <button class="btn-secondary"><i class="fas fa-play"></i></button>
-                        <button class="btn-secondary"><i class="fas fa-cog"></i></button>
-                    </div>
-                </div>
-                <div class="channel-group">
-                    <label>Canal 3</label>
-                    <div class="channel-buttons">
-                        <button class="btn-secondary"><i class="fas fa-play"></i></button>
-                        <button class="btn-secondary"><i class="fas fa-cog"></i></button>
+        <div id="info-cnt91-section" class="content-section">
+            <div class="info-container">
+                <h1>Información del CNT-91</h1>
+                <div class="info-content">
+                    <h2>Descripción General</h2>
+                    <p>El CNT-91 es un contador/temporizador universal de alta precisión diseñado para mediciones de frecuencia, período, tiempo y otros parámetros relacionados.</p>
+                    
+                    <h2>Características Principales</h2>
+                    <ul>
+                        <li>Rango de frecuencia: DC a 300 MHz</li>
+                        <li>Resolución de tiempo: hasta 100 ps</li>
+                        <li>Múltiples canales de entrada</li>
+                        <li>Interface GPIB para control remoto</li>
+                        <li>Pantalla LED de alta visibilidad</li>
+                    </ul>
+
+                    <h2>Aplicaciones</h2>
+                    <ul>
+                        <li>Mediciones de frecuencia de alta precisión</li>
+                        <li>Calibración de equipos</li>
+                        <li>Investigación y desarrollo</li>
+                        <li>Control de calidad</li>
+                    </ul>
+
+                    <h2>Documentación y Recursos</h2>
+                    <div class="documentation-links">
+                        <a href="https://pendulum-instruments.com/products/frequency-counters-analyzers/cnt-91-91r/" target="_blank" class="doc-link">
+                            <i class="fas fa-external-link-alt"></i> Página del Producto Pendulum
+                        </a>
+                        <a href="https://pendulum-instruments.com/wp-content/uploads/2022/05/pendulum-cnt-91-91r_timer-counter-analyzer-calibrator.pdf" target="_blank" class="doc-link">
+                            <i class="fas fa-file-pdf"></i> Datasheet
+                        </a>
+                        <a href="https://pendulum-instruments.com/wp-content/uploads/2022/05/CNT-90_91um_Rev22.pdf" target="_blank" class="doc-link">
+                            <i class="fas fa-book"></i> Manual de Usuario
+                        </a>
+                        <a href="https://pendulum-instruments.com/wp-content/uploads/2022/05/CNT-90ph.pdf" target="_blank" class="doc-link">
+                            <i class="fas fa-code"></i> Manual de Programador
+                        </a>
                     </div>
                 </div>
             </div>

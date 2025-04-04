@@ -1,24 +1,56 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Función para actualizar el estado
-    function actualizarEstado() {
-        fetch('/api/estado')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('estado-dispositivo').textContent = 
-                    data.conectado ? 'Conectado' : 'Desconectado';
-            })
-            .catch(error => console.error('Error:', error));
-    }
+    // Manejo de la navegación
+    const navLinks = document.querySelectorAll('.sidebar nav a');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remover clase active de todos los enlaces
+            navLinks.forEach(l => l.classList.remove('active'));
+            
+            // Añadir clase active al enlace clickeado
+            this.classList.add('active');
+            
+            // Obtener la sección a mostrar
+            const sectionId = this.getAttribute('data-section');
+            
+            // Ocultar todas las secciones
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Mostrar la sección seleccionada
+            const targetSection = document.getElementById(sectionId + '-section');
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+        });
+    });
 
-    // Event listeners para los botones
-    document.getElementById('btn-conectar').addEventListener('click', function() {
-        fetch('/api/conectar', { method: 'POST' })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.mensaje);
-                actualizarEstado();
-            })
-            .catch(error => console.error('Error:', error));
+    // Manejo del botón de conexión
+    const btnConectar = document.getElementById('btn-conectar');
+    const estadoDispositivo = document.getElementById('estado-dispositivo');
+    const statusIndicator = document.querySelector('.status-indicator');
+
+    btnConectar.addEventListener('click', async function() {
+        try {
+            const response = await fetch('/api/conectar', {
+                method: 'POST'
+            });
+            
+            if (response.ok) {
+                estadoDispositivo.textContent = 'Conectado';
+                statusIndicator.classList.remove('offline');
+                statusIndicator.classList.add('online');
+                btnConectar.innerHTML = '<i class="fas fa-plug"></i> Desconectar';
+                
+                // Actualizar estado
+                await actualizarEstado();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     });
 
     document.getElementById('btn-desconectar').addEventListener('click', function() {
@@ -69,6 +101,22 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error:', error));
         }
     });
+
+    // Función para actualizar el estado
+    async function actualizarEstado() {
+        try {
+            const response = await fetch('/api/estado');
+            const data = await response.json();
+            
+            if (data.conectado) {
+                // Actualizar valores en la interfaz
+                document.querySelector('.temperature .value').textContent = data.temperatura;
+                // ... actualizar otros valores según sea necesario
+            }
+        } catch (error) {
+            console.error('Error al actualizar estado:', error);
+        }
+    }
 
     // Actualizar estado inicial
     actualizarEstado();

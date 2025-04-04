@@ -4,7 +4,10 @@ Módulo que contiene los endpoints de la API para el control del CNT-91.
 
 from flask import Blueprint, jsonify, request
 from typing import Dict, Any
-from ..instrument.cnt91 import CNT91
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from instrument.cnt91 import CNT91
 
 # Crear el Blueprint para la API
 api = Blueprint('cnt91_api', __name__)
