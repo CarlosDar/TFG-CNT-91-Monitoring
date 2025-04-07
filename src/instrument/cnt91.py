@@ -4,22 +4,28 @@ Módulo para el control del dispositivo CNT-91 mediante conexión GPIB.
 
 import pyvisa
 from typing import Optional, Union, Dict, Any
+from pyvisa.highlevel import ResourceManager
 
 class CNT91:
     """
     Clase para controlar el dispositivo CNT-91.
     """
     
-    def __init__(self, resource_name: str):
+    def __init__(self, address='GPIB0::10::INSTR'):
         """
-        Inicializa la conexión con el dispositivo CNT-91.
+        Inicializa la conexión con el dispositivo.
         
         Args:
-            resource_name (str): Identificador del recurso GPIB (ej: 'GPIB0::12::INSTR')
+            address (str): Dirección GPIB del dispositivo.
         """
-        self.resource_name = resource_name
-        self.instrument = None
-        self._connected = False
+        rm = ResourceManager()
+        self.dev = rm.open_resource(address)
+        
+        self.dev.write('*IDN?')
+        resposta = self.dev.read()
+        self.device_name = resposta.strip()  # Guardamos el nombre del dispositivo
+        
+        print('Communication established with GSE-UIB ' + self.device_name)
         
     def conectar(self) -> bool:
         """
@@ -29,7 +35,6 @@ class CNT91:
             bool: True si la conexión fue exitosa, False en caso contrario
         """
         # TODO: Implementar conexión GPIB
-        self._connected = True
         return True
     
     def desconectar(self) -> None:
@@ -37,7 +42,7 @@ class CNT91:
         Cierra la conexión con el dispositivo.
         """
         # TODO: Implementar desconexión
-        self._connected = False
+        pass
     
     def obtener_temperatura(self) -> float:
         """
@@ -46,8 +51,9 @@ class CNT91:
         Returns:
             float: Temperatura en grados Celsius
         """
-        # TODO: Implementar lectura de temperatura
-        return 25.0
+        self.dev.write(':SYST:TEMP?')
+        temp = self.dev.read()
+        return float(temp)
     
     def medir_frecuencia(self, canal: int = 1) -> float:
         """
@@ -82,7 +88,7 @@ class CNT91:
         """
         # TODO: Implementar obtención de estado
         return {
-            "conectado": self._connected,
+            "conectado": True,
             "temperatura": self.obtener_temperatura(),
             "canales_activos": [1, 2, 3, 4]
         } 

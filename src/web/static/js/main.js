@@ -32,6 +32,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnConectar = document.getElementById('btn-conectar');
     const estadoDispositivo = document.getElementById('estado-dispositivo');
     const statusIndicator = document.querySelector('.status-indicator');
+    let intervaloActualizacion = null;
+    let actualizandoTemperatura = false; // Control para evitar solicitudes simultáneas
+
+    // Función para actualizar el estado
+    async function actualizarEstado() {
+        if (actualizandoTemperatura) return; // Evitar solicitudes simultáneas
+        
+        try {
+            actualizandoTemperatura = true;
+            const response = await fetch('/api/estado');
+            const data = await response.json();
+            
+            if (data.conectado) {
+                // Actualizar temperatura
+                const temperaturaElement = document.querySelector('.temperature .value');
+                if (temperaturaElement) {
+                    temperaturaElement.textContent = data.temperatura.toFixed(2);
+                }
+            }
+        } catch (error) {
+            console.error('Error al actualizar estado:', error);
+        } finally {
+            actualizandoTemperatura = false;
+        }
+    }
 
     btnConectar.addEventListener('click', async function() {
         try {
@@ -39,17 +64,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST'
             });
             
-            if (response.ok) {
+            const data = await response.json();
+            
+            if (data.conectado) {
                 estadoDispositivo.textContent = 'Conectado';
                 statusIndicator.classList.remove('offline');
                 statusIndicator.classList.add('online');
                 btnConectar.innerHTML = '<i class="fas fa-plug"></i> Desconectar';
                 
-                // Actualizar estado
-                await actualizarEstado();
+                // Iniciar actualización periódica cada 30 segundos
+                if (!intervaloActualizacion) {
+                    intervaloActualizacion = setInterval(actualizarEstado, 30000);
+                }
+            } else {
+                estadoDispositivo.textContent = 'Desconectado';
+                statusIndicator.classList.remove('online');
+                statusIndicator.classList.add('offline');
+                btnConectar.innerHTML = '<i class="fas fa-plug"></i> Conectar';
+                
+                // Detener actualización periódica
+                if (intervaloActualizacion) {
+                    clearInterval(intervaloActualizacion);
+                    intervaloActualizacion = null;
+                }
             }
         } catch (error) {
             console.error('Error:', error);
+            estadoDispositivo.textContent = 'Error de conexión';
+            statusIndicator.classList.remove('online');
+            statusIndicator.classList.add('offline');
         }
     });
 
@@ -101,22 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error:', error));
         }
     });
-
-    // Función para actualizar el estado
-    async function actualizarEstado() {
-        try {
-            const response = await fetch('/api/estado');
-            const data = await response.json();
-            
-            if (data.conectado) {
-                // Actualizar valores en la interfaz
-                document.querySelector('.temperature .value').textContent = data.temperatura;
-                // ... actualizar otros valores según sea necesario
-            }
-        } catch (error) {
-            console.error('Error al actualizar estado:', error);
-        }
-    }
 
     // Actualizar estado inicial
     actualizarEstado();

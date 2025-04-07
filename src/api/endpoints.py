@@ -13,7 +13,7 @@ from instrument.cnt91 import CNT91
 api = Blueprint('cnt91_api', __name__)
 
 # Instancia global del instrumento
-instrumento = CNT91('GPIB0::10::INSTR')
+instrumento = None
 
 @api.route('/conectar', methods=['POST'])
 def conectar():
@@ -21,10 +21,23 @@ def conectar():
     Endpoint para conectar con el dispositivo.
     """
     try:
-        # TODO: Implementar conexión real
-        return jsonify({"mensaje": "Dispositivo conectado exitosamente"})
+        global instrumento
+        if instrumento is None:
+            instrumento = CNT91()
+            return jsonify({
+                "mensaje": "Dispositivo conectado exitosamente",
+                "conectado": True
+            })
+        else:
+            return jsonify({
+                "mensaje": "El dispositivo ya está conectado",
+                "conectado": True
+            })
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({
+            "error": str(e),
+            "conectado": False
+        }), 500
 
 @api.route('/desconectar', methods=['POST'])
 def desconectar():
@@ -32,8 +45,18 @@ def desconectar():
     Endpoint para desconectar el dispositivo.
     """
     try:
-        # TODO: Implementar desconexión real
-        return jsonify({"mensaje": "Dispositivo desconectado exitosamente"})
+        global instrumento
+        if instrumento is not None:
+            instrumento = None
+            return jsonify({
+                "mensaje": "Dispositivo desconectado exitosamente",
+                "conectado": False
+            })
+        else:
+            return jsonify({
+                "mensaje": "El dispositivo ya está desconectado",
+                "conectado": False
+            })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -43,8 +66,18 @@ def obtener_temperatura():
     Endpoint para obtener la temperatura del dispositivo.
     """
     try:
-        # TODO: Implementar lectura real de temperatura
-        return jsonify({"temperatura": 25.0})
+        global instrumento
+        if instrumento is None:
+            return jsonify({
+                "error": "Dispositivo no conectado",
+                "conectado": False
+            }), 400
+        
+        temp = instrumento.measure_temperature()
+        return jsonify({
+            "temperatura": float(temp),
+            "conectado": True
+        })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -80,11 +113,21 @@ def obtener_estado():
     Endpoint para obtener el estado actual del dispositivo.
     """
     try:
-        # TODO: Implementar obtención real del estado
-        return jsonify({
-            "conectado": True,
-            "temperatura": 25.0,
-            "canales_activos": [1, 2, 3, 4]
-        })
+        global instrumento
+        conectado = instrumento is not None
+        
+        if conectado:
+            temp = instrumento.measure_temperature()
+            return jsonify({
+                "conectado": True,
+                "temperatura": float(temp),
+                "canales_activos": [1, 2, 3, 4]
+            })
+        else:
+            return jsonify({
+                "conectado": False,
+                "temperatura": None,
+                "canales_activos": []
+            })
     except Exception as e:
         return jsonify({"error": str(e)}), 500 

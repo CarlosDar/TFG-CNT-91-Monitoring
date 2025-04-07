@@ -89,6 +89,61 @@ Genera el prompt con este nivel de detalle y claridad para que sirva de base a l
 - La interfaz web con su diseño
 - La estructura de directorios completa
 
+## 3. Prompt de Integración del Instrumento
+**Objetivo**: Implementar la funcionalidad real de conexión y medición con el dispositivo CNT-91.
+
+**Prompt**:
+```
+Integración de la clase del instrumento
+
+Utiliza la siguiente clase CNT_frequenciometro (cuyo código incluyo a continuación) para establecer la conexión con el dispositivo mediante GPIB.
+
+Esta clase debe ubicarse en cnt91.py por ejemplo
+
+
+class CNT_frequenciometro:
+    
+    def __init__(self, address='GPIB0::10::INSTR'):
+        import pyvisa
+        from pyvisa.highlevel import ResourceManager
+        
+        rm = ResourceManager()
+        self.dev = rm.open_resource(address)
+        
+        self.dev.write('*IDN?')
+        resposta = self.dev.read()
+        self.device_name = resposta.strip()  # Guardamos el nombre del dispositivo
+        
+        print('Communication established with GSE-UIB ' + self.device_name)
+        
+    def Measure_temperature(self): 
+        self.dev.write(':SYST:TEMP?')
+        temp = self.dev.read()
+        return temp
+
+
+
+Funcionalidad de Conexión y Medición en la Interfaz Web
+
+Botón "Conectar": Cuando el usuario haga clic en "Conectar" en la página web, se debe intentar establecer la conexión con el dispositivo usando la clase anterior.
+
+Si la conexión es exitosa, el widget correspondiente debe actualizarse mostrando la etiqueta "Connected" en verde.
+
+Si la conexión falla, se debe mostrar "Not Connected" en rojo.
+
+Medición de Temperatura:
+
+Una vez conectada la comunicación, se debe invocar la función Measure_temperature para obtener la temperatura del dispositivo.
+
+El valor obtenido se mostrará en un widget en la misma página web, actualizando dinámicamente la información de la temperatura.
+```
+
+**Propósito**: Este prompt se utilizó para:
+- Integrar la clase real del instrumento con la funcionalidad GPIB
+- Implementar la conexión real con el dispositivo
+- Añadir la medición de temperatura en tiempo real
+- Actualizar la interfaz web para mostrar el estado de conexión y los valores medidos
+
 ## Notas Adicionales
 - Los prompts fueron diseñados para obtener una estructura base sin implementación funcional
 - Se enfocaron en la organización y claridad del código
