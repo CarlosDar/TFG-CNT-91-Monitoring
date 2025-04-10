@@ -60,39 +60,54 @@ document.addEventListener('DOMContentLoaded', function() {
 
     btnConectar.addEventListener('click', async function() {
         try {
+            // Cambiar el estado a "Trying To Connect"
+            estadoDispositivo.textContent = 'Trying To Connect';
+            
             const response = await fetch('/api/conectar', {
                 method: 'POST'
             });
             
             const data = await response.json();
             
-            if (data.conectado) {
+            if (data.status === 'success') {
                 estadoDispositivo.textContent = 'Conectado';
                 statusIndicator.classList.remove('offline');
                 statusIndicator.classList.add('online');
                 btnConectar.innerHTML = '<i class="fas fa-plug"></i> Desconectar';
                 
-                // Iniciar actualización periódica cada 30 segundos
+                // Obtener temperatura inicial
+                obtenerTemperatura();
+                
+                // Iniciar actualización periódica cada 1 minuto
                 if (!intervaloActualizacion) {
-                    intervaloActualizacion = setInterval(actualizarEstado, 30000);
+                    intervaloActualizacion = setInterval(obtenerTemperatura, 60000);
                 }
             } else {
-                estadoDispositivo.textContent = 'Desconectado';
-                statusIndicator.classList.remove('online');
-                statusIndicator.classList.add('offline');
-                btnConectar.innerHTML = '<i class="fas fa-plug"></i> Conectar';
+                // Añadir delay antes de mostrar el mensaje de error
+                setTimeout(() => {
+                    estadoDispositivo.textContent = 'Not Able To Connect';
+                    statusIndicator.classList.remove('online');
+                    statusIndicator.classList.add('offline');
+                    btnConectar.innerHTML = '<i class="fas fa-plug"></i> Conectar';
+                }, 500);
                 
                 // Detener actualización periódica
                 if (intervaloActualizacion) {
                     clearInterval(intervaloActualizacion);
                     intervaloActualizacion = null;
                 }
+                
+                // Limpiar el display de temperatura
+                actualizarDisplayTemperatura('--');
             }
         } catch (error) {
             console.error('Error:', error);
-            estadoDispositivo.textContent = 'Error de conexión';
-            statusIndicator.classList.remove('online');
-            statusIndicator.classList.add('offline');
+            // Añadir delay antes de mostrar el mensaje de error
+            setTimeout(() => {
+                estadoDispositivo.textContent = 'Not Able To Connect';
+                statusIndicator.classList.remove('online');
+                statusIndicator.classList.add('offline');
+            }, 500);
         }
     });
 

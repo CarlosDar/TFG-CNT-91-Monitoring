@@ -25,17 +25,20 @@ def conectar():
         if instrumento is None:
             instrumento = CNT91()
             return jsonify({
-                "mensaje": "Dispositivo conectado exitosamente",
+                "status": "success",
+                "message": "Dispositivo conectado exitosamente",
                 "conectado": True
             })
         else:
             return jsonify({
-                "mensaje": "El dispositivo ya está conectado",
+                "status": "error",
+                "message": "El dispositivo ya está conectado",
                 "conectado": True
-            })
+            }), 400
     except Exception as e:
         return jsonify({
-            "error": str(e),
+            "status": "error",
+            "message": str(e),
             "conectado": False
         }), 500
 
