@@ -216,20 +216,25 @@ header {
 }
 
 .btn-secondary {
-    background-color: var(--secondary-color);
+    background-color: #4a90e2;
     color: white;
+    padding: 0.5rem 1rem;
     border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
+    border-radius: 4px;
     cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
     display: flex;
     align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s;
+    gap: 0.5rem;
 }
 
 .btn-secondary:hover {
-    background-color: #546E7A;
+    background-color: #357abd;
+}
+
+.btn-secondary i {
+    margin-right: 0.25rem;
 }
 
 /* Secciones de contenido */
@@ -322,4 +327,32 @@ header {
 
 .doc-link i {
     font-size: 1.2rem;
+}
+
+.config-section {
+    margin-bottom: 0.5rem;
+}
+
+.config-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.config-select {
+    width: 120px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 0.9rem;
+    color: #333;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.config-select:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 } 

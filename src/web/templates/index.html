@@ -84,6 +84,29 @@
                 </div>
             </div>
         </div>
+
+        <!-- Configuración -->
+        <div id="configuracion-section" class="content-section">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-cog"></i>
+                    Configuración
+                </div>
+                <div class="card-content">
+                    <div class="config-section">
+                        <div class="config-row">
+                            <select id="canal" class="config-select">
+                                <option value="1">Channel A</option>
+                                <option value="2">Channel B</option>
+                            </select>
+                            <button id="configurarCanal" class="btn-secondary">
+                                <i class="fas fa-cog"></i> Configure
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>

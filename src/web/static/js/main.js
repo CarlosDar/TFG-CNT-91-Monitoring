@@ -160,6 +160,36 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Función para configurar el canal
+    async function configurarCanal() {
+        const canalValue = document.getElementById('canal').value;
+        // Convertir 1 a 'A' y 2 a 'B'
+        const canal = canalValue === '1' ? 'A' : 'B';
+        
+        try {
+            const response = await fetch('/api/configurar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ canal })
+            });
+            
+            const data = await response.json();
+            if (data.status === 'success') {
+                alert('Canal configurado correctamente');
+            } else {
+                alert('Error al configurar el canal: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al configurar el canal');
+        }
+    }
+
+    // Event listener para el botón de configurar canal
+    document.getElementById('configurarCanal').addEventListener('click', configurarCanal);
+
     // Actualizar estado inicial
     actualizarEstado();
 }); 
