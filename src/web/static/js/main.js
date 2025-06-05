@@ -33,28 +33,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const estadoDispositivo = document.getElementById('estado-dispositivo');
     const statusIndicator = document.querySelector('.status-indicator');
     let intervaloActualizacion = null;
-    let actualizandoTemperatura = false; // Control para evitar solicitudes simultáneas
 
     // Función para actualizar el estado
     async function actualizarEstado() {
-        if (actualizandoTemperatura) return; // Evitar solicitudes simultáneas
-        
         try {
-            actualizandoTemperatura = true;
             const response = await fetch('/api/estado');
             const data = await response.json();
             
             if (data.conectado) {
-                // Actualizar temperatura
-                const temperaturaElement = document.querySelector('.temperature .value');
-                if (temperaturaElement) {
-                    temperaturaElement.textContent = data.temperatura.toFixed(2);
-                }
+                estadoDispositivo.textContent = 'Conectado';
+                statusIndicator.classList.remove('offline');
+                statusIndicator.classList.add('online');
+            } else {
+                estadoDispositivo.textContent = 'Desconectado';
+                statusIndicator.classList.remove('online');
+                statusIndicator.classList.add('offline');
             }
         } catch (error) {
             console.error('Error al actualizar estado:', error);
-        } finally {
-            actualizandoTemperatura = false;
         }
     }
 
@@ -75,12 +71,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 statusIndicator.classList.add('online');
                 btnConectar.innerHTML = '<i class="fas fa-plug"></i> Desconectar';
                 
-                // Obtener temperatura inicial
-                obtenerTemperatura();
-                
                 // Iniciar actualización periódica cada 1 minuto
                 if (!intervaloActualizacion) {
-                    intervaloActualizacion = setInterval(obtenerTemperatura, 60000);
+                    intervaloActualizacion = setInterval(actualizarEstado, 60000);
                 }
             } else {
                 // Añadir delay antes de mostrar el mensaje de error
@@ -96,9 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     clearInterval(intervaloActualizacion);
                     intervaloActualizacion = null;
                 }
-                
-                // Limpiar el display de temperatura
-                actualizarDisplayTemperatura('--');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -117,15 +107,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 alert(data.mensaje);
                 actualizarEstado();
-            })
-            .catch(error => console.error('Error:', error));
-    });
-
-    document.getElementById('btn-temperatura').addEventListener('click', function() {
-        fetch('/api/temperatura')
-            .then(response => response.json())
-            .then(data => {
-                alert(`Temperatura: ${data.temperatura}°C`);
             })
             .catch(error => console.error('Error:', error));
     });
