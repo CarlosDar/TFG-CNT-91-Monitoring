@@ -20,12 +20,12 @@ wheels/
 .installed.cfg
 *.egg
 
-# Entornos virtuales
+# Virtual Environment
 venv/
-env/
 ENV/
+env/
 
-# IDEs
+# IDE
 .idea/
 .vscode/
 *.swp
